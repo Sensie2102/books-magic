@@ -12,6 +12,20 @@ export const addReview = async (req, res) => {
             })
         }
 
+        // Check if the user has already reviewed the book
+        const existingReview = await Reviews.findOne({
+            where: {
+                bookId,
+                userId
+            }
+        })
+
+        if (existingReview) {
+            return res.status(400).json({
+                message: 'You have already added a review for this book'
+            })
+        }
+
         const review = await Reviews.create({
             bookId,
             userId,
