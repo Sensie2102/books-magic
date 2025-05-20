@@ -1,5 +1,4 @@
-import Reviews from "../models/reviews";
-import Books from "../models/books";
+import { Reviews, Books } from "../models/index.js"
 
 const updateAverageRating = async (bookId, transaction = null) => {
     const reviews = await Reviews.findAll({

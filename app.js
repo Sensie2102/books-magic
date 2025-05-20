@@ -1,13 +1,13 @@
 import express from 'express';
-import database from './config/db.js';
+import { database } from './models/index.js'
 
 const app = express();
 
-// database.authenticate().then(() => {
-//     console.log('Database connected successfully');
-// }).catch((err) => {
-//     console.error('Unable to connect to database:', err)
-// })
+database.sync({ alter: true })
+    .then(() => console.log('Models synced with PostgreSQL'))
+    .catch(err => console.error('Sync error:', err));
+
+
 
 app.get('/', (req, res) => {
     res.json({
