@@ -1,5 +1,6 @@
 import express from 'express';
 import { database } from './models/index.js'
+import authRoute from './routes/authRoutes.js';
 
 const app = express();
 
@@ -8,6 +9,9 @@ database.sync({ alter: true })
     .catch(err => console.error('Sync error:', err));
 
 
+app.use(express.json());
+
+app.use('/auth', authRoute)
 
 app.get('/', (req, res) => {
     res.json({
