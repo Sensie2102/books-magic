@@ -1,6 +1,7 @@
 import express from 'express';
 import { database } from './models/index.js'
 import authRoute from './routes/authRoutes.js';
+import bookRoute from './routes/bookRoutes.js';
 
 const app = express();
 
@@ -11,6 +12,7 @@ database.sync({ alter: true })
 
 app.use(express.json());
 
+app.use('/books', bookRoute)
 app.use('/auth', authRoute)
 
 app.get('/', (req, res) => {

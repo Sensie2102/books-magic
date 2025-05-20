@@ -73,11 +73,11 @@ Endpoint:
 Request:
 
     curl --location 'http://localhost:3000/auth/login' \
---header 'Content-Type: application/json' \
---data-raw '{
-  "email": "sensie@example.com",
-  "password": "test123"
-}'
+    --header 'Content-Type: application/json' \
+    --data-raw '{
+    "email": "sensie@example.com",
+    "password": "test123"
+    }'
 
 
 Expected Response:
@@ -85,6 +85,76 @@ Expected Response:
     {
         "message": "User authenticated successfully",
         "token": <JWT_TOKEN>
+    }
+
+### GET - Get All Books
+
+Endpoint:
+
+    POST /books/
+
+Request:
+
+    curl --location 'http://localhost:3000/books'
+
+    curl --location 'http://localhost:3000/books?page=2&limit=10'
+
+    curl --location 'http://localhost:3000/books?genre=Programming'
+
+
+Expected Response:
+
+    {
+        "total": TOTAL_BOOKS,
+        "page": CURRENT_PAGE,
+        "totalPages": TOTAL_PAGES,
+        "data": [BOOKS]
+    }
+
+### GET - Get Book by ID
+
+Endpoint:
+
+    POST /books/:id
+
+Request:
+
+    curl --location 'http://localhost:3000/books/<BOOK_ID>'
+
+
+Expected Response:
+
+    {
+        "book": {<BOOK>},
+        "reviews": [<REVIEWS>],
+        "totalReviews": <TOTAL_REVIEWS>,
+        "page": <CURRENT_PAGE>,
+        "totalPages": <TOTAL_PAGES>
+    }
+
+### POST - Add new book
+
+Endpoint:
+
+    GET /books/
+
+Request:
+
+    curl --location 'http://localhost:3000/books' \
+    --header 'Authorization: Bearer <TOKEN>' \
+    --header 'Content-Type: application/json' \
+    --data '{
+    "title": "The Software Craftsman",
+    "author": "Sandro Mancuso",
+    "genre": "Programming"
+    }'
+
+
+Expected Response:
+
+    {
+        "message": "Book created successfully",
+        "bookId": "<BOOK_ID>"
     }
 
 ## Design Decisions and Assumptions
