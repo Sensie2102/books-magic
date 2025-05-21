@@ -10,6 +10,6 @@ bookRoute.get('/:id', getBook);
 
 //Authenticated Route
 bookRoute.post('/', authenticateToken, createBook);
-bookRoute.put('/:id/review', authenticateToken, addReview)
+bookRoute.post('/:id/review', authenticateToken, addReview)
 
 export default bookRoute;

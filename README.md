@@ -136,7 +136,7 @@ Expected Response:
 
 Endpoint:
 
-    GET /books/
+    POST /books/
 
 Request:
 
@@ -155,6 +155,56 @@ Expected Response:
     {
         "message": "Book created successfully",
         "bookId": "<BOOK_ID>"
+    }
+
+### POST - Add a new review
+
+Endpoint:
+
+    POST /books/: id/reviews
+
+Request:
+
+    curl --location --request POST 'http://localhost:3000/books/<BOOK_ID>/review' \
+        --header 'Authorization: Bearer <JWT_TOKEN>' \
+        --header 'Content-Type: application/json' \
+        --data-raw '{
+        "rating": 4.5,
+        "review": "Fantastic book with clear examples!"
+    }'
+
+
+
+Expected Response:
+
+    {
+        Review added successfully",
+        "reviewId": "<REVIEW_IDs>"
+    }
+
+### PUT - Update a new review
+
+Endpoint:
+
+    PUT /books/
+
+Request:
+
+    curl --location --request PUT 'http://localhost:3000/reviews/<REVIEW_ID>' \
+        --header 'Authorization: Bearer <JWT_TOKEN>' \
+        --header 'Content-Type: application/json' \
+        --data-raw '{
+        "rating": 4.0,
+        "comment": "Updated review. Great book with practical tips."
+    }'
+
+
+
+Expected Response:
+
+    {
+        Review updated successfully",
+        "reviewId": "<REVIEW_IDs>"
     }
 
 ## Design Decisions and Assumptions
