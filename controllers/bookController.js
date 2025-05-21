@@ -12,7 +12,7 @@ export const getBook = async (req, res) => {
             return res.status(404).json({ message: 'Book not found' });
         }
 
-        
+
         const reviews = await Reviews.findAndCountAll({
             where: { bookId },
             include: [
@@ -26,7 +26,7 @@ export const getBook = async (req, res) => {
             offset: parseInt(offset)
         });
 
-        
+
         res.json({
             book,
             reviews: reviews.rows,
@@ -111,5 +111,40 @@ export const createBook = async (req, res) => {
             message: "Unable to create books",
             error: error.message
         })
+    }
+}
+
+export const searchBook = async (req, res) => {
+    const { title, page = 1, limit = 10 } = req.query
+    const offset = (page - 1) * limit;
+
+    if (!title) {
+        return res.status(400).json({
+            message: "Title is required"
+        })
+    }
+    try {
+        const result = await Books.findAndCountAll({
+            where: {
+                title: {
+                    [Op.iLike]: `%${title}%`
+                }
+            },
+            limit: parseInt(limit),
+            offset: parseInt(offset),
+            order: [['createdAt', 'DESC']]
+        })
+
+        res.json({
+            total: result.count,
+            page: parseInt(page),
+            totalPages: Math.ceil(result.count / limit),
+            data: result.rows
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: 'Failed to perform search',
+            error: error.message
+        });
     }
 }

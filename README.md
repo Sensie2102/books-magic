@@ -207,4 +207,70 @@ Expected Response:
         "reviewId": "<REVIEW_IDs>"
     }
 
+### GET - Search for books with title
+
+Endpoint:
+
+    GET /books/search
+
+Request:
+
+    curl --location 'http://localhost:3000/books/search?q=clean&page=1&limit=5'
+
+
+Expected Response:
+
+    {
+        "total": TOTAL_BOOKS,
+        "page": CURRENT_PAGE,
+        "totalPages": TOTAL_PAGES,
+        "data": [BOOKS]
+    }
+
 ## Design Decisions and Assumptions
+
+- Users are community and not authors themselves.
+- The search is only with regards to title.
+- The books are basic with just title and author for community to put the reviews.
+- Reviews can be any Floating point number between 0 - 5.
+
+## DB Schema
+
+### Users
+
+| Column    | Type      | Constraints               |
+|-----------|-----------|---------------------------|
+| id        | UUID      | Primary Key, Auto-gen     |
+| username  | STRING    | Unique, Not Null          |
+| email     | STRING    | Unique, Not Null          |
+| password  | STRING    | Hashed, Not Null          |
+| createdAt | TIMESTAMP | Auto-managed by Sequelize |
+| updatedAt | TIMESTAMP | Auto-managed by Sequelize |
+
+---
+
+### Books
+
+| Column         | Type         | Constraints               |
+|----------------|--------------|---------------------------|
+| id             | UUID         | Primary Key, Auto-gen     |
+| title          | STRING       | Unique, Not Null          |
+| author         | STRING       | Not Null                  |
+| genre          | STRING       | Not Null                  |
+| averageRating  | DECIMAL(2,1) | Default: 0.0              |
+| createdAt      | TIMESTAMP    | Auto-managed by Sequelize |
+| updatedAt      | TIMESTAMP    | Auto-managed by Sequelize |
+
+---
+
+### Reviews
+
+| Column     | Type         | Constraints                           |
+|------------|--------------|---------------------------------------|
+| id         | UUID         | Primary Key, Auto-gen                 |
+| rating     | DECIMAL(2,1) | Range: 0.0 - 5.0, Required            |
+| review     | TEXT         | Optional                              |
+| userId     | UUID         | Foreign Key → Users(id), Not Null     |
+| bookId     | UUID         | Foreign Key → Books(id), Not Null     |
+| createdAt  | TIMESTAMP    | Auto-managed by Sequelize             |
+| updatedAt  | TIMESTAMP    | Auto-managed by Sequelize             |
